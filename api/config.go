@@ -4,7 +4,6 @@ import (
 	"errors"
 	"flag"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"os"
 	"path"
@@ -13,8 +12,8 @@ import (
 )
 
 func exitWithError(message string) {
-	fmt.Fprintf(os.Stderr, "%s\n\n", message)
-	fmt.Fprintf(os.Stderr, "Usage of %s:\n", os.Args[0])
+	_, _ = fmt.Fprintf(os.Stderr, "%s\n\n", message)
+	_, _ = fmt.Fprintf(os.Stderr, "Usage of %s:\n", os.Args[0])
 	flag.PrintDefaults()
 	os.Exit(1)
 }
@@ -30,7 +29,7 @@ func loadEnvYAML() {
 	if err != nil && errors.Is(err, os.ErrNotExist) {
 		return
 	}
-	cfgContents, err := ioutil.ReadFile(envCfg)
+	cfgContents, err := os.ReadFile(envCfg)
 	if err != nil {
 		log.Fatalf("error reading %s: %v ", yamlCfgFileName, err)
 	}
