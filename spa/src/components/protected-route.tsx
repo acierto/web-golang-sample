@@ -3,22 +3,18 @@ import React, { ComponentType } from "react";
 import { Route, RouteProps } from "react-router-dom";
 import { PageLoader } from "./page-loader";
 
-interface ProtectedRouteProps extends RouteProps {
-  component: ComponentType;
-}
-
-export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
-  component,
-  ...args
-}) => (
+export const ProtectedRoute: React.FC<RouteProps> = ({ ...args }) => (
   <Route
-    component={withAuthenticationRequired(component, {
-      onRedirecting: () => (
-        <div className="page-layout">
-          <PageLoader />
-        </div>
-      ),
-    })}
+    component={withAuthenticationRequired(
+      args.component as unknown as ComponentType,
+      {
+        onRedirecting: () => (
+          <div className="page-layout">
+            <PageLoader />
+          </div>
+        ),
+      }
+    )}
     {...args}
   />
 );
